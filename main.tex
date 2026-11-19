@@ -1,0 +1,928 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazilian]{babel}
+\usepackage{amssymb}
+\usepackage{newtxtext}
+\usepackage{newtxmath}
+\usepackage{microtype}
+\usepackage[
+  a4paper,
+  left=22mm,
+  right=22mm,
+  top=22mm,
+  bottom=30mm,
+  headheight=22pt,
+  headsep=7mm,
+  footskip=16mm
+]{geometry}
+\usepackage{parskip}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{{imagens/}{figuras/}}
+\usepackage[table]{xcolor}
+\usepackage{transparent}
+\usepackage{multicol}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc,fit,backgrounds,shapes.geometric,decorations.pathmorphing}
+\usepackage[most]{tcolorbox}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{lastpage}
+
+% ---------- Paleta ----------
+\definecolor{LogoBlue}{HTML}{342EE5}
+\definecolor{PrimaryBlue}{HTML}{342EE5}
+\definecolor{Ink}{HTML}{17181D}
+\definecolor{DarkGray}{HTML}{363943}
+\definecolor{MidGray}{HTML}{6B7280}
+\definecolor{LightGray}{HTML}{F5F6F8}
+\definecolor{RuleGray}{HTML}{D8DCE3}
+\definecolor{BlueLight}{HTML}{F0F1FF}
+\definecolor{BlueMedium}{HTML}{7470F2}
+\definecolor{AlertMuted}{HTML}{8F3F47}
+\definecolor{AlertLight}{HTML}{FBF4F5}
+\definecolor{SoftGray}{HTML}{F5F6F8}
+\definecolor{Blue}{HTML}{342EE5}
+\definecolor{BlueSoft}{HTML}{F0F1FF}
+\definecolor{Green}{HTML}{6B7280}
+\definecolor{GreenSoft}{HTML}{F7F8FA}
+\definecolor{Orange}{HTML}{6B7280}
+\definecolor{OrangeSoft}{HTML}{F4F5F7}
+\definecolor{Pink}{HTML}{8F3F47}
+\definecolor{PinkSoft}{HTML}{FBF4F5}
+\definecolor{Purple}{HTML}{342EE5}
+\definecolor{PurpleSoft}{HTML}{F0F1FF}
+\definecolor{YellowSoft}{HTML}{F7F8FA}
+\definecolor{capabg1}{HTML}{1C2B6B}
+\definecolor{capabg2}{HTML}{0F1533}
+\definecolor{accent}{HTML}{5B7CFA}
+\definecolor{textlight}{HTML}{F4F5FA}
+\definecolor{textmuted}{HTML}{C9CEE8}
+
+% Mantidos por compatibilidade com o conteúdo original (mesma cor da paleta)
+\colorlet{azul}{PrimaryBlue}
+\colorlet{azulclaro}{BlueSoft}
+
+\hypersetup{colorlinks=true,linkcolor=Ink,urlcolor=PrimaryBlue,citecolor=PrimaryBlue,
+  pdftitle={Git e GitHub: fundamentos, colaboração e acesso}}
+\setlength{\parindent}{0pt}
+\linespread{1.05}
+\setlist[itemize]{leftmargin=1.3em,itemsep=0.25em,topsep=0.3em}
+\setlist[enumerate]{leftmargin=1.5em,itemsep=0.3em,topsep=0.3em}
+\renewcommand{\arraystretch}{1.18}
+\newcommand{\disciplina}{Git e GitHub}
+
+% ---------- Cabeçalho e rodapé ----------
+\pagestyle{fancy}
+\fancyhf{}
+
+\definecolor{HeaderFooterGray}{HTML}{A2A6AE}
+
+\makeatletter
+\newcounter{resposta}
+\let\FooterAnswer\@empty
+\newcommand{\respostarodape}[1]{%
+  \stepcounter{resposta}%
+  \textsuperscript{\textcolor{HeaderFooterGray}{\theresposta}}%
+  \gdef\FooterAnswer{%
+    \textsuperscript{\theresposta}\ \textit{Possível resposta:} #1%
+  }%
+}
+\newcommand{\FooterContent}{%
+  \parbox[b]{\headwidth}{%
+    \ifx\FooterAnswer\@empty
+      \vspace*{0.85em}%
+    \else
+      {\scriptsize\sffamily\color{HeaderFooterGray}\FooterAnswer\par}%
+      \vspace{0.35em}%
+    \fi
+    \makebox[\headwidth]{%
+      \scriptsize\sffamily\color{HeaderFooterGray}%
+      \makebox[0pt][l]{Prof.\ Edson Vaz Lopes}%
+      \hfill
+      \thepage\,/\,\pageref{LastPage}%
+      \hfill
+      \makebox[0pt][r]{%
+        \raisebox{0pt}{%
+          \transparent{0.29}{%
+            \includegraphics[height=8mm]{vnuv11-preto.png}%
+          }%
+        }%
+      }%
+    }%
+  }%
+}
+\AddToHook{shipout/after}{\global\let\FooterAnswer\@empty}
+\makeatother
+
+% ============================================================
+% CABEÇALHO
+% ============================================================
+
+\fancyhead[L]{%
+  \footnotesize\sffamily
+  \color{HeaderFooterGray}
+  Git e GitHub%
+}
+
+\fancyhead[R]{%
+  \footnotesize\sffamily
+  \color{HeaderFooterGray}
+  vnuv tecnologia%
+}
+
+% ============================================================
+% RODAPÉ
+% ============================================================
+
+\fancyfoot[C]{\FooterContent}
+
+% ============================================================
+% LINHAS
+% ============================================================
+
+\renewcommand{\headrulewidth}{0.25pt}
+\renewcommand{\footrulewidth}{0.25pt}
+
+\renewcommand{\headrule}{%
+  \hbox to\headwidth{%
+    \color{RuleGray}\leaders\hrule height \headrulewidth\hfill
+  }%
+}
+
+\renewcommand{\footrule}{%
+  \hbox to\headwidth{%
+    \color{RuleGray}\leaders\hrule height \footrulewidth\hfill
+  }%
+}
+
+% ---------- Títulos ----------
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{Ink}}
+  {\color{PrimaryBlue}\sffamily\bfseries\thesection}
+  {0.9em}
+  {}
+  [\vspace{0.25em}{\color{PrimaryBlue}\titlerule[0.7pt]}]
+\titleformat{name=\section,numberless}
+  {\normalfont\Large\bfseries\color{Ink}}
+  {}
+  {0pt}
+  {}
+  [\vspace{0.25em}{\color{PrimaryBlue}\titlerule[0.7pt]}]
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{DarkGray}}
+  {\color{PrimaryBlue}\sffamily\thesubsection}
+  {0.75em}
+  {}
+\titleformat{name=\subsection,numberless}
+  {\normalfont\large\bfseries\color{DarkGray}}
+  {}
+  {0pt}
+  {}
+\titlespacing*{\section}{0pt}{2.2em}{1.0em}
+\titlespacing*{\subsection}{0pt}{1.55em}{0.55em}
+
+% ---------- Boxes ----------
+\tcbset{
+  editorialbox/.style={
+    enhanced,
+    breakable,
+    colback=white,
+    colframe=RuleGray,
+    boxrule=0.35pt,
+    arc=0.8mm,
+    left=5mm,
+    right=4mm,
+    top=5.2mm,
+    bottom=3.2mm,
+    before skip=1.0em,
+    after skip=1.0em,
+    borderline west={1.2pt}{0pt}{PrimaryBlue},
+    fonttitle=\sffamily\bfseries\footnotesize,
+    coltitle=PrimaryBlue,
+    attach boxed title to top left={xshift=4mm,yshift=-3.1mm},
+    boxed title style={empty,boxrule=0pt,size=minimal},
+  },
+  alertbox/.style={
+    editorialbox,
+    colback=AlertLight,
+    borderline west={1.2pt}{0pt}{AlertMuted},
+    coltitle=AlertMuted,
+  }
+}
+\tcbset{editorialbox}
+
+% ---------- Código ----------
+\lstdefinestyle{code}{
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{LightGray},
+  frame=leftline,
+  rulecolor=\color{PrimaryBlue},
+  framerule=1.1pt,
+  breaklines=true,
+  showstringspaces=false,
+  columns=fullflexible,
+  keywordstyle=\bfseries\color{PrimaryBlue},
+  stringstyle=\color{DarkGray},
+  commentstyle=\itshape\color{MidGray},
+  numbers=none,
+  xleftmargin=5mm,
+  xrightmargin=2mm,
+  framexleftmargin=3mm,
+  aboveskip=1.0em,
+  belowskip=1.0em,
+  literate={á}{{\'a}}1 {à}{{\`a}}1 {ã}{{\~a}}1 {â}{{\^a}}1
+           {é}{{\'e}}1 {ê}{{\^e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
+           {ô}{{\^o}}1 {õ}{{\~o}}1 {ú}{{\'u}}1 {ç}{{\c{c}}}1
+           {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1
+           {Ú}{{\'U}}1 {Ç}{{\c{C}}}1
+}
+\lstset{style=code}
+
+\newcommand{\passo}[2]{\subsection*{PASSO #1 \quad|\quad #2}}
+\newcommand{\figura}[3]{\begin{figure}[H]\centering\includegraphics[width=#2\linewidth]{#1}\caption{#3}\end{figure}}
+
+% ---------- Colinha de uma página (resumo do primeiro passo) ----------
+\newcommand{\cheatsect}[2]{\textbf{\fontsize{8.6}{9.8}\selectfont\color{#1}#2}\par\vspace{0.5mm}}
+\newcommand{\cheatnote}[1]{{\fontsize{7.8}{9}\selectfont#1}\par}
+\newcommand{\cheatcmd}[2]{\noindent\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{.58\linewidth}@{\hspace{1.2mm}}>{\raggedright\arraybackslash}X@{}}\ttfamily\fontsize{7.8}{9}\selectfont#1 & \fontsize{7.8}{9}\selectfont#2\end{tabularx}\vspace{0.3mm}}
+\tcbset{
+  cheatbox/.style={
+    enhanced,colback=white,colframe=RuleGray,boxrule=0.35pt,arc=0.8mm,
+    left=2.2mm,right=2.2mm,top=1.2mm,bottom=1.2mm,
+    before skip=1.8mm,after skip=0mm,
+    borderline west={1pt}{0pt}{PrimaryBlue}
+  },
+  cheatboxlocal/.style={cheatbox,borderline west={1pt}{0pt}{DarkGray}},
+  cheatalert/.style={cheatbox,colback=AlertLight,borderline west={1pt}{0pt}{AlertMuted}}
+}
+
+\begin{document}
+\pagenumbering{gobble}
+
+% ============================================================
+% CAPA
+% ============================================================
+\begin{titlepage}
+\thispagestyle{empty}
+  \begin{tikzpicture}[remember picture,overlay]
+    \shade[top color=capabg1,bottom color=capabg2]
+      (current page.south west) rectangle (current page.north east);
+
+    \draw[textmuted,opacity=0.15,line width=0.5pt]
+      ($(current page.north east)+(-2,-1)$) circle (9cm);
+    \draw[textmuted,opacity=0.12,line width=0.5pt]
+      ($(current page.north east)+(-2.5,-1.5)$) circle (7cm);
+
+    \node[anchor=north west] at ($(current page.north west)+(1.8,-1.65)$) {
+      \includegraphics[width=0.84cm]{vnuv11-branco.png}
+    };
+    \node[anchor=north west,text=textlight,font=\sffamily\bfseries\fontsize{16}{16}\selectfont]
+      at ($(current page.north west)+(2.90,-1.65)$) {VNUV TECNOLOGIA};
+    \node[anchor=north west,text=textmuted,font=\sffamily\fontsize{7.4}{8}\selectfont]
+      at ($(current page.north west)+(2.90,-2.23)$) {CURSO DE GIT, GITHUB E CONTROLE DE VERSÃO};
+
+    \node[anchor=north east,text=textmuted,draw=textmuted,rounded corners=8pt,
+          inner sep=6pt,font=\sffamily\fontsize{9}{9}\selectfont]
+      at ($(current page.north east)+(-1.8,-1.75)$) {2026.2};
+
+    \node[anchor=north west,text=accent,font=\sffamily\bfseries\fontsize{10}{10}\selectfont]
+      at ($(current page.north west)+(1.8,-10.95)$) {DISCIPLINA · GIT E GITHUB};
+
+    \node[anchor=north west,text=textlight,font=\sffamily\bfseries\fontsize{32}{36}\selectfont,align=left]
+      at ($(current page.north west)+(1.8,-11.95)$) {Git e GitHub\\[2pt]do Commit ao\\[2pt]Pull Request};
+
+    \draw[accent,line width=2pt]
+      ($(current page.north west)+(1.8,-16.9)$) -- ($(current page.north west)+(3.4,-16.9)$);
+
+    \node[anchor=north west,text=textmuted,font=\sffamily\bfseries\fontsize{14}{16}\selectfont]
+      at ($(current page.north west)+(1.8,-17.7)$) {Conceitos, terminal, colaboração e publicação};
+
+    \draw[textmuted,opacity=0.3,line width=0.3pt]
+      ($(current page.south west)+(1.8,3.2)$) -- ($(current page.south east)+(-1.8,3.2)$);
+
+    \node[anchor=south west,text=textmuted,font=\sffamily\fontsize{8}{8}\selectfont]
+      at ($(current page.south west)+(1.8,2.5)$) {PROFESSOR};
+    \node[anchor=south west,text=textlight,font=\sffamily\bfseries\fontsize{12}{12}\selectfont]
+      at ($(current page.south west)+(1.8,1.8)$) {Prof. Edson Vaz Lopes};
+
+    \node[anchor=south east,text=textmuted,font=\sffamily\fontsize{8}{8}\selectfont]
+      at ($(current page.south east)+(-1.8,2.5)$) {VERSAO};
+    \node[anchor=south east,text=textlight,font=\sffamily\bfseries\fontsize{11}{11}\selectfont]
+      at ($(current page.south east)+(-1.8,1.8)$) {v1.0 · 2026};
+  \end{tikzpicture}
+\end{titlepage}
+
+\clearpage
+\pagenumbering{arabic}
+
+% ============================================================
+% RESUMO DO PRIMEIRO PASSO (colinha de uma página)
+% ============================================================
+\begingroup
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{6mm}
+
+{\large\bfseries\color{Ink}Resumo do primeiro passo}\hfill{\small\bfseries\color{PrimaryBlue}Consulta rápida}\par
+\vspace{0.4mm}
+\noindent{\color{PrimaryBlue}\rule{\linewidth}{0.7pt}}\par
+\vspace{0.8mm}
+{\small\color{DarkGray}Do zero ao primeiro \texttt{push}: o que fazer, onde fazer e como resolver os erros mais comuns. Leia esta página antes de explorar o resto da apostila.}\par
+\vspace{1.2mm}
+
+\begin{center}
+\begin{tikzpicture}[>=Latex, node distance=1.2mm, every node/.style={font=\scriptsize,align=center}]
+\node[draw=DarkGray,rounded corners=2pt,fill=LightGray,minimum width=44mm,minimum height=7.5mm] (local) {\textbf{\color{Ink}GIT --- no computador}\\ arquivos $\rightarrow$ add $\rightarrow$ commit};
+\node[draw=PrimaryBlue,rounded corners=2pt,fill=BlueSoft,minimum width=44mm,minimum height=7.5mm,right=28mm of local] (remote) {\textbf{\color{PrimaryBlue}GITHUB --- na internet}\\ repositório remoto / colaboração};
+\draw[->,very thick,PrimaryBlue] ([yshift=1.8mm]local.east) -- node[above]{\texttt{git push} (enviar)} ([yshift=1.8mm]remote.west);
+\draw[<-,very thick,DarkGray] ([yshift=-1.8mm]local.east) -- node[below]{\texttt{git pull} (atualizar)} ([yshift=-1.8mm]remote.west);
+\end{tikzpicture}
+\end{center}
+\vspace{-1.5mm}
+
+\begin{multicols}{2}
+\begin{tcolorbox}[cheatbox]
+\cheatsect{PrimaryBlue}{1. Conta e instalação --- navegador + PC}
+\cheatnote{\textbf{GitHub (site):} crie uma conta em \url{https://github.com}. \textbf{Git (PC):} instale em \url{https://git-scm.com}. \textbf{Opcional:} GitHub Desktop (interface gráfica).}
+\cheatcmd{git -{}-version}{Confere se o Git está instalado.}
+\end{tcolorbox}
+
+\begin{tcolorbox}[cheatboxlocal]
+\cheatsect{DarkGray}{2. Identifique o autor --- Git (uma vez por perfil)}
+\cheatcmd{git config -{}-global user.name "Nome"}{Nome que aparece nos commits.}
+\cheatcmd{git config -{}-global user.email "email@exemplo.com"}{E-mail registrado nos commits.}
+\cheatcmd{git config -{}-global init.defaultBranch main}{Novos \texttt{git init} usam \texttt{main}.}
+\cheatcmd{git config -{}-global -{}-list}{Mostra configurações globais.}
+\cheatnote{\textbf{Atenção:} nome e e-mail \textbf{não fazem login} nem concedem acesso ao GitHub. \texttt{-{}-global} configura o Git para o usuário do PC.}
+\end{tcolorbox}
+
+\begin{tcolorbox}[cheatbox]
+\cheatsect{PrimaryBlue}{3. Crie o remoto --- GitHub (site)}
+\cheatnote{\textbf{New repository} $\rightarrow$ nome $\rightarrow$ Public/Private $\rightarrow$ \textbf{Create repository}. Se já tem pasta local, crie \textbf{vazio} (sem README, licença ou \texttt{.gitignore}). Copie a \textbf{URL HTTPS}.}
+\cheatnote{\textbf{Private} oculta o conteúdo de pessoas não autorizadas; não cria uma senha exclusiva do repositório.}
+\end{tcolorbox}
+
+\begin{tcolorbox}[cheatboxlocal]
+\cheatsect{DarkGray}{4. Caminho A --- pasta já existe no PC}
+\cheatnote{Abra o terminal \textbf{dentro da pasta do projeto}. Execute na ordem:}
+\cheatcmd{git init -b main}{Inicia o repositório na branch \texttt{main}.}
+\cheatcmd{git status}{Mostra arquivos e alterações.}
+\cheatcmd{git add .}{Prepara arquivos para o commit.}
+\cheatcmd{git commit -m "Primeira versao"}{Registra versão no histórico \textbf{local}.}
+\cheatcmd{git remote add origin URL}{Cadastra a URL HTTPS do GitHub.}
+\cheatcmd{git remote -v}{Confere o endereço remoto (não o login).}
+\cheatcmd{git push -u origin main}{Envia e define destino padrão da branch.}
+\cheatnote{\textbf{Troque \texttt{URL}} pela URL copiada do GitHub.}
+{\scriptsize\textbf{Fluxo diário:} \texttt{status} $\rightarrow$ \texttt{add .} $\rightarrow$ \texttt{commit} $\rightarrow$ \texttt{push}.}
+\end{tcolorbox}
+
+\begin{tcolorbox}[cheatbox]
+\cheatsect{PrimaryBlue}{5. Caminho B --- projeto já existe no GitHub}
+\cheatcmd{git clone URL}{Copia projeto remoto e já configura \texttt{origin}.}
+\cheatcmd{cd nome-da-pasta}{Entra na pasta que foi clonada.}
+\cheatcmd{git pull}{Busca e integra alterações remotas.}
+\cheatnote{\textbf{Escolha A ou B:} após \texttt{git clone}, \textbf{não precisa} executar \texttt{git init} nem \texttt{remote add origin}.}
+\end{tcolorbox}
+
+\begin{tcolorbox}[cheatbox]
+\cheatsect{PrimaryBlue}{6. Login e segurança --- GitHub (remoto)}
+\cheatnote{Ao fazer \texttt{push}, o \textbf{Git Credential Manager} pode abrir o navegador para autenticar. Ele pode \textbf{guardar credenciais no perfil do PC} e reutilizá-las em \textbf{outros repositórios} conforme as permissões concedidas. \textbf{Não é login exclusivo deste projeto.}}
+\cheatnote{\textbf{Computador compartilhado:} use perfil individual/temporário; ao sair, encerre a sessão do navegador \textbf{e apague as credenciais GitHub armazenadas} no gerenciador de credenciais do sistema. Sair do site, sozinho, pode não bastar. Se necessário, revogue acessos no GitHub em \textbf{Settings $\rightarrow$ Applications}.}
+\cheatnote{\textbf{Acesso restrito:} no GitHub, um \textit{fine-grained personal access token} pode ser limitado a \textbf{um repositório}, com \textbf{Contents: Read and write} e prazo curto. Use-o no lugar da senha em HTTPS quando aplicável. \textbf{Nunca cole o token na URL, no código ou em prints.} Mesmo um token restrito deve ser removido do PC ao final.}
+\end{tcolorbox}
+
+\begin{tcolorbox}[cheatboxlocal]
+\cheatsect{DarkGray}{7. Branches e conferência --- Git local}
+\cheatnote{\textbf{Branch} = linha de desenvolvimento. \texttt{main} e \texttt{master} são apenas \textbf{nomes diferentes}; não são duas plataformas.}
+\cheatcmd{git branch -{}-show-current}{Mostra o nome da branch atual.}
+\cheatcmd{git branch}{Lista branches locais (* = atual).}
+\cheatcmd{git branch -m main}{Renomeia branch atual para \texttt{main}.}
+\cheatcmd{git branch -m master main}{Renomeia \texttt{master} para \texttt{main}.}
+\cheatcmd{git log -{}-oneline}{Mostra commits resumidos.}
+\cheatnote{Renomear localmente \textbf{não renomeia automaticamente} uma branch já publicada no GitHub. Não use \texttt{-M} (forçar) sem entender o risco.}
+\end{tcolorbox}
+
+\begin{tcolorbox}[cheatalert]
+\cheatsect{AlertMuted}{8. Deu erro? Diagnóstico rápido}
+\cheatnote{\textbf{\texttt{not a git repository}:} terminal fora da pasta / falta \texttt{git init}.}
+\cheatnote{\textbf{\texttt{Author identity unknown}:} configure \texttt{user.name} e \texttt{user.email}.}
+\cheatnote{\textbf{\texttt{remote origin already exists}:} confira \texttt{git remote -v}; não adicione de novo.}
+\cheatnote{\textbf{\texttt{src refspec main does not match any}:} confira branch e existência de commit.}
+\cheatnote{\textbf{\texttt{Authentication failed} / \texttt{Permission denied}:} verifique login e autorização de escrita.}
+\cheatnote{\textbf{\texttt{non-fast-forward}:} remoto tem histórico diferente; \textbf{não force} o push. Inspecione e integre as mudanças.}
+\end{tcolorbox}
+\end{multicols}
+
+\vspace{1mm}
+{\small\color{PrimaryBlue}\textbf{Regra para memorizar:} \texttt{commit} salva no Git local \quad|\quad \texttt{push} envia ao GitHub \quad|\quad \texttt{pull} atualiza do remoto \quad|\quad \texttt{clone} copia um remoto.}\par
+\endgroup
+
+\vspace{4mm}
+
+\begin{center}
+{\large Guia prático de Git e GitHub: dos conceitos internos ao fluxo de trabalho em equipe e à publicação}
+\end{center}
+
+\begin{tcolorbox}[title={OBJETIVO DA AULA}]
+Ao terminar, o estudante será capaz de explicar o que o Git resolve e como ele registra o histórico de um projeto; usar os comandos essenciais (\texttt{init}, \texttt{add}, \texttt{commit}, \texttt{status}, \texttt{diff}, \texttt{log}); criar e integrar branches, inclusive resolvendo conflitos; sincronizar um repositório local com o GitHub por \texttt{push}, \texttt{pull}, \texttt{fetch} e \textit{pull request}; desfazer mudanças com segurança; escolher entre HTTPS e SSH para autenticar no terminal; criar, enviar e publicar um projeto no GitHub Pages; e diagnosticar os erros mais comuns antes de pedir ajuda.
+\end{tcolorbox}
+
+\begin{tcolorbox}[title={MAPA DA APOSTILA --- DO CONCEITO À PRÁTICA}]
+\textbf{1. Entender:} o que são Git, GitHub, commit, branch e merge, por analogia e em profundidade.\\
+\textbf{2. Trabalhar localmente:} as três áreas do Git, status/diff/log, objetos internos, branches e merges.\\
+\textbf{3. Colaborar:} repositórios remotos, fetch/pull/push, conflitos e \textit{pull requests}.\\
+\textbf{4. Corrigir:} desfazer mudanças, \texttt{.gitignore}, stash e rebase.\\
+\textbf{5. Acessar e publicar:} autenticação por HTTPS e SSH, criação de projetos e GitHub Pages.\\
+\textbf{6. Resolver problemas:} diagnosticar e corrigir os erros mais comuns.
+\end{tcolorbox}
+
+\section*{Como usar este material}
+Comece pela Parte 1 se você nunca usou Git; ela apresenta os conceitos por analogia, sem comandos. As Partes 2 a 17 formam o núcleo técnico, do primeiro repositório à colaboração em equipe, e devem ser acompanhadas no terminal. As Partes 18 a 20 tratam do acesso (HTTPS/SSH), da publicação no GitHub Pages e do diagnóstico de erros. As duas últimas seções reúnem uma tabela de comandos e perguntas de revisão. \textbf{Exemplos de usuários, projetos e endereços foram generalizados} para publicação.
+
+\section*{Antes de começar}
+\textbullet\ Computador com Git instalado e acesso a um terminal (Prompt, PowerShell, Git Bash ou terminal do Linux/macOS).\par
+\textbullet\ Conta pessoal no GitHub: \url{https://github.com/}.\par
+\textbullet\ Um editor de texto ou o VS Code para acompanhar os exemplos.\par
+\textbullet\ Tempo sugerido: curso em módulos; as Partes 1--9 podem ser usadas em uma aula inicial.\par
+\textbullet\ A interface do GitHub e as mensagens do terminal podem variar conforme sistema, idioma e versão instalada.\par
+
+\begin{tcolorbox}[alertbox,title={ANTES DE EXECUTAR OS COMANDOS}]
+Pratique em uma pasta e em um repositório de teste, nunca em um projeto de produção ou de outra pessoa. Os endereços de repositório usados como exemplo são fictícios: substitua-os pelo endereço real do seu projeto. Operações que reescrevem histórico (\texttt{reset --hard}, \texttt{commit --amend}, \texttt{rebase}) são destrutivas para alterações locais não confirmadas; use-as apenas em um repositório de laboratório até dominar seus efeitos.
+\end{tcolorbox}
+
+\section*{Parte 1 --- Entendendo por analogia}
+\subsection*{Commit: salvando versões do projeto}
+Imagine terminar a introdução de um trabalho e pensar ``essa versão ficou boa, é melhor guardar''. Depois, ao concluir cada novo capítulo, você repete o gesto e ainda anota o que mudou: ``terminei a introdução'', ``concluí o capítulo 1''. No Git, cada um desses registros de uma versão do projeto é chamado de \textbf{commit}: um ponto identificado no histórico, acompanhado de uma mensagem que explica o que foi alterado.
+
+\subsection*{Branch: criando uma versão paralela}
+Agora imagine reescrever completamente a introdução, com medo de estragar a versão que já funciona. Em vez de alterar diretamente o trabalho principal, você cria uma versão paralela e testa ali; se o resultado for ruim, basta descartá-la, e o trabalho principal permanece intacto. No Git, essa linha paralela de desenvolvimento é chamada de \textbf{branch}. Branches permitem testar ideias sem modificar imediatamente a versão principal do projeto.
+
+\subsection*{Merge: juntando as alterações}
+Se a nova introdução ficar melhor, você quer incorporá-la ao trabalho principal. Em vez de copiar e colar manualmente as mudanças, o Git compara as diferenças entre as duas versões e as incorpora automaticamente. Esse processo é chamado de \textbf{merge}: integrar as alterações de uma branch a outra.
+
+\subsection*{GitHub: colocando o projeto na internet}
+Até aqui, todo o histórico está armazenado apenas no seu computador. E se o notebook quebrar? E se outra pessoa precisar acompanhar o projeto? É nesse momento que entra o \textbf{GitHub}: uma plataforma online onde se pode armazenar e compartilhar projetos que usam Git. O projeto deixa de existir apenas na sua máquina e passa a ter também uma cópia remota, acessível a outras pessoas autorizadas.
+
+\subsection*{Push e pull: enviando e trazendo alterações}
+Quando você confirma alterações localmente, elas existem primeiro só no seu computador. \textbf{Push} é a operação que envia essas alterações para o repositório remoto no GitHub. Na direção contrária, se alguém mais atualizou o projeto no GitHub, \textbf{pull} é a operação que traz essas atualizações para o seu computador e sincroniza o seu repositório local.
+
+\begin{tcolorbox}[title={RESUMO DA ANALOGIA}]
+\textbf{Git} controla e organiza as versões do projeto. \textbf{Commit} registra uma versão no histórico. \textbf{Branch} cria uma linha paralela de desenvolvimento. \textbf{Merge} integra as alterações de uma branch a outra. \textbf{GitHub} hospeda e compartilha o repositório na internet. \textbf{Push} envia alterações locais ao repositório remoto. \textbf{Pull} traz alterações do repositório remoto para o computador.
+\end{tcolorbox}
+
+\section*{Parte 2 --- Por que controlar versões?}
+Quem nunca criou arquivos como \texttt{trabalho-final.docx}, \texttt{trabalho-final-v2.docx} e \texttt{trabalho-final-agora-vai.docx}? Essa estratégia guarda cópias, mas não responde com confiabilidade a perguntas essenciais: o que mudou, quem alterou, quando a alteração ocorreu e como recuperar uma versão anterior? Em projetos de programação o problema se multiplica: muitos arquivos são alterados e várias pessoas trabalham ao mesmo tempo.
+
+Um \textbf{sistema de controle de versão} organiza essas mudanças em um histórico consultável. O Git é um sistema \emph{distribuído} de controle de versão: cada repositório local normalmente guarda os dados de histórico necessários para trabalhar e consultar versões sem depender continuamente de um servidor.
+
+\begin{tcolorbox}[title={IDEIA FUNDAMENTAL}]
+O Git não substitui um editor de código: ele acompanha os estados do projeto, registrando mudanças que o usuário decide confirmar. Um \emph{commit} é um ponto identificado no histórico, associado a uma mensagem e a metadados.
+\end{tcolorbox}
+
+\section*{Parte 3 --- Git, GitHub e o terminal}
+\subsection*{O que cada ferramenta faz}
+\textbf{Git} é o programa instalado no computador para criar repositórios, acompanhar arquivos e organizar o histórico. \textbf{GitHub} é um serviço de hospedagem e colaboração que recebe repositórios Git e oferece revisão de alterações, páginas de visualização e automações. GitHub não é um requisito para usar Git: é possível criar commits e branches apenas na máquina local. Outros serviços também hospedam repositórios Git.
+
+\figura{01_git_github}{.90}{Separação entre o repositório local e o repositório remoto.}
+
+\begin{tcolorbox}[title={GIT É A TECNOLOGIA, GITHUB É A PLATAFORMA}]
+Git é a tecnologia de controle de versão. GitHub é a plataforma online onde o repositório pode ficar hospedado, junto de outras pessoas autorizadas.
+\end{tcolorbox}
+
+\subsection*{O que é um repositório?}
+Um repositório é a pasta do projeto acompanhada pelo Git. Ele pode existir apenas no computador, apenas no GitHub, ou nos dois lugares ao mesmo tempo.
+
+\subsection*{O terminal}
+O \textbf{terminal} é uma interface textual onde digitamos instruções. Comandos como \texttt{git status} são executados dentro da pasta do projeto; o prefixo \texttt{git} identifica o programa e o termo seguinte indica a operação. Pode-se usar o terminal integrado ao VS Code ou o terminal do próprio sistema operacional.
+
+\subsection*{Preparação do ambiente}
+Depois de instalar o Git, confirme sua disponibilidade e configure a identidade usada nos próximos commits:
+\begin{lstlisting}
+git --version
+git config --global user.name "Seu Nome"
+git config --global user.email "seu@email.com"
+git config --global --list
+\end{lstlisting}
+A configuração de nome e e-mail identifica o autor declarado do commit; \textbf{não} autentica automaticamente no GitHub. A autenticação do serviço remoto é uma etapa separada, tratada na Parte 18.
+
+\section*{Parte 4 --- Criando o primeiro repositório}
+Para acompanhar os exemplos, crie uma pasta chamada \texttt{projeto-git} contendo dois arquivos: \texttt{notas.txt} com a linha ``comprar leite'' e \texttt{tarefas.txt} com a linha ``estudar lógica''. Abra o terminal dentro dessa pasta e execute:
+\begin{lstlisting}
+git init -b main
+git status
+\end{lstlisting}
+O comando \texttt{git init} cria o repositório e o diretório interno \texttt{.git}, responsável por armazenar objetos e referências do Git. A opção \texttt{-b main} define o nome do branch inicial, evitando diferenças de configuração entre computadores. A pasta \texttt{.git} costuma ficar oculta no gerenciador de arquivos.
+
+\begin{tcolorbox}[alertbox,title={UMA DISTINÇÃO IMPORTANTE}]
+Criar um repositório não equivale a criar o primeiro commit. Os arquivos já existem no diretório de trabalho, mas só entram no histórico quando são preparados e confirmados.
+\end{tcolorbox}
+
+\section*{Parte 5 --- As três áreas do trabalho com Git}
+A estrutura conceitual mais importante para entender os comandos básicos é formada por três áreas:
+\begin{enumerate}
+\item \textbf{Diretório de trabalho (working tree):} os arquivos que você vê e edita no computador.
+\item \textbf{Área de preparação (staging area ou index):} representação do conteúdo escolhido para compor o próximo commit.
+\item \textbf{Repositório local:} a base de objetos e referências que preserva o histórico confirmado.
+\end{enumerate}
+\figura{02_tres_areas}{.98}{O conteúdo percorre a área de trabalho, o índice e o histórico.}
+Imagine organizar a fotografia de uma mesa: você escolhe os objetos que vão aparecer. O comando \texttt{git add} prepara o conteúdo escolhido; \texttt{git commit} registra um novo ponto no histórico a partir do estado do índice.
+\begin{lstlisting}
+git add notas.txt tarefas.txt
+git status
+git commit -m "Primeira versao do projeto"
+git status
+\end{lstlisting}
+O Git pode mostrar arquivos novos não rastreados com \texttt{??} no formato compacto de \texttt{git status --short}; depois da preparação, um \texttt{A} indica a adição no índice. Após o commit, se não restarem alterações, o diretório estará \emph{limpo}. A mensagem deve explicar de forma objetiva o propósito da mudança.
+
+\section*{Parte 6 --- Inspecionando mudanças: status, diff e log}
+\texttt{git status} descreve a situação dos arquivos; \texttt{git diff} evidencia alterações; \texttt{git log} apresenta o histórico de commits. Edite \texttt{notas.txt} e acrescente ``comprar pão''.
+\begin{lstlisting}
+git status
+git diff
+git add notas.txt
+git diff --staged
+git commit -m "Adicionar pao a lista"
+git log --oneline
+\end{lstlisting}
+Uma linha iniciada por \texttt{+} em um diff representa conteúdo adicionado; \texttt{-} indica remoção. \texttt{git diff} sem opções normalmente compara o diretório de trabalho com o índice, enquanto \texttt{git diff --staged} compara o conteúdo preparado com o último commit. Por isso, depois de um \texttt{git add}, o primeiro diff pode ficar vazio, embora o segundo mostre a alteração.
+
+\texttt{git log --oneline} apresenta resumos dos commits acompanhados de identificadores abreviados. O tamanho do identificador curto pode variar: não é obrigatório ter exatamente sete caracteres.
+
+\section*{Parte 7 --- O que existe dentro do Git: objetos e hashes}
+Uma analogia útil é imaginar o commit como uma \emph{fotografia lógica} do projeto. Tecnicamente, o Git registra um conjunto de objetos ligados entre si, com endereçamento pelo conteúdo. No armazenamento tradicional do Git, os três tipos centrais para entender snapshots são:
+\begin{itemize}
+\item \textbf{blob}: armazena os bytes do conteúdo de um arquivo, sem associar o nome do caminho;
+\item \textbf{tree}: registra entradas de arquivos e diretórios, seus nomes, modos e referências a blobs ou a outras trees;
+\item \textbf{commit}: registra a referência à tree raiz, o(s) commit(s) pai(s), autor, registrador, datas e mensagem.
+\end{itemize}
+\figura{03_objetos}{.92}{Relacionamento simplificado entre commit, árvore e conteúdos de arquivos.}
+O \textbf{hash} é um identificador calculado a partir do tipo, tamanho e conteúdo serializado do objeto. Repositórios Git historicamente usam SHA-1, com identificadores hexadecimais de 40 caracteres; o Git também oferece suporte a repositórios no formato SHA-256, com identificadores de 64 caracteres. Hash não é um nome digitado manualmente nem um mecanismo de criptografia dos arquivos.
+
+Ao alterar somente \texttt{notas.txt}, o novo snapshot pode referenciar o mesmo blob de \texttt{tarefas.txt}. É essa reutilização de objetos imutáveis que torna a representação por snapshots eficiente; o Git ainda dispõe de estratégias adicionais de compactação e armazenamento. Não confunda ``snapshot do projeto'' com ``duplicação literal de todos os arquivos'' em cada commit.
+
+\section*{Parte 8 --- Branches, main e HEAD}
+Um \textbf{branch} é uma referência móvel para um commit. Ao confirmar uma alteração no branch atual, essa referência avança para o novo commit. Branches permitem desenvolver funcionalidades ou testar ideias sem alterar imediatamente a linha adotada como principal.
+
+\texttt{main} é um nome convencionado para o branch principal, mas não é uma palavra com poderes especiais no mecanismo do Git. \texttt{HEAD} indica o ponto de referência atual: normalmente aponta simbolicamente para um branch, mas também pode apontar diretamente para um commit, no chamado \emph{detached HEAD}.
+\begin{lstlisting}
+git branch
+git switch -c ideia
+git branch --show-current
+\end{lstlisting}
+A ideia durável é: o branch é uma \emph{referência}, não uma cópia completa da pasta.
+
+\section*{Parte 9 --- Juntando linhas de desenvolvimento: merge}
+Depois de criar o branch \texttt{ideia}, modifique \texttt{notas.txt}, prepare e faça um commit. Então volte para \texttt{main} e integre:
+\begin{lstlisting}
+git switch main
+git merge ideia
+\end{lstlisting}
+\subsection*{Fast-forward}
+Quando o branch de destino não recebeu commits divergentes, o Git pode apenas avançar sua referência até a ponta do branch integrado. Esse movimento se chama \textbf{fast-forward} e não exige um commit de merge.
+\figura{08_fast_forward}{.93}{Em um fast-forward, uma referência avança no mesmo caminho do histórico.}
+\subsection*{Merge com histórico divergente}
+Se \texttt{main} e \texttt{ideia} receberem commits distintos após o ponto comum, o Git pode criar um \textbf{commit de merge}, normalmente com dois pais, registrando a integração de ambos os caminhos.
+\figura{04_branches_merge}{.92}{Representação de caminhos divergentes e posterior integração.}
+Para visualizar os caminhos:
+\begin{lstlisting}
+git log --graph --oneline --all --decorate
+\end{lstlisting}
+
+\section*{Parte 10 --- Conflitos: quando o Git não decide sozinho}
+Conflitos podem aparecer quando alterações incompatíveis atingem o mesmo trecho, ou quando operações distintas afetam o mesmo caminho. Exemplo: no branch \texttt{main}, a linha ``comprar leite'' torna-se ``comprar leite integral''; em outro branch, vira ``comprar leite de aveia''.
+
+Em um conflito textual típico, o Git insere marcadores como:
+\begin{lstlisting}
+<<<<<<< HEAD
+comprar leite integral
+=======
+comprar leite de aveia
+>>>>>>> ideia
+\end{lstlisting}
+O desenvolvedor deve decidir o conteúdo correto, editar o arquivo, remover os marcadores, executar \texttt{git add notas.txt} e finalizar o merge com \texttt{git commit}, quando necessário. O objetivo não é simplesmente manter as duas linhas em todos os casos, mas \textbf{resolver o significado da mudança}. Alguns editores oferecem interfaces gráficas para isso.
+
+\begin{tcolorbox}[alertbox,title={CONFLITO NÃO SIGNIFICA PERDA AUTOMÁTICA DE TRABALHO}]
+O Git interrompe a integração para que uma pessoa escolha a solução. Antes de tentar um novo procedimento, consulte \texttt{git status} para saber se há um merge em andamento.
+\end{tcolorbox}
+
+\section*{Parte 11 --- Repositórios remotos: origin, push e clone}
+Um \textbf{remoto} é uma referência configurada para outro repositório, geralmente hospedado num servidor. \texttt{origin} é apenas o nome convencional desse remoto.
+\begin{lstlisting}
+git remote add origin https://github.com/USUARIO/REPO.git
+git remote -v
+git push -u origin main
+\end{lstlisting}
+O endereço acima é ilustrativo: substitua-o pelo endereço real do repositório criado no GitHub. O parâmetro \texttt{-u} configura o acompanhamento do branch remoto para facilitar operações posteriores. Em situações reais, o envio pode exigir login por navegador, token ou SSH, conforme o protocolo escolhido (veja a Parte 18).
+
+Outra pessoa pode obter uma cópia do projeto por meio de:
+\begin{lstlisting}
+git clone https://github.com/USUARIO/REPO.git
+\end{lstlisting}
+\texttt{clone} baixa os objetos necessários, cria uma cópia de trabalho e normalmente já configura o remoto \texttt{origin}.
+
+\section*{Parte 12 --- Trabalho em equipe: fetch, pull e push rejeitado}
+Imagine duas pessoas trabalhando sobre o mesmo branch. Uma publica seu commit; a segunda cria um commit local com base em uma versão anterior e tenta enviar. O Git normalmente rejeita o \texttt{push} que não é fast-forward, para evitar substituir o histórico remoto sem integração prévia.
+\figura{05_sincronizacao}{.95}{Diferentes cópias do projeto podem se afastar durante o trabalho em equipe.}
+\texttt{git fetch} busca objetos e atualiza referências de acompanhamento remoto, como \texttt{origin/main}, \emph{sem integrar automaticamente} o branch atual. Já \texttt{git pull} realiza o fetch e depois integra as mudanças conforme a configuração (por merge, rebase ou apenas fast-forward). Não se deve supor que o pull sempre faça merge, porque a estratégia pode variar.
+\begin{lstlisting}
+git fetch origin
+git log --oneline --graph --all
+git pull --no-rebase origin main
+git push origin main
+\end{lstlisting}
+O comando \texttt{pull --no-rebase} torna explícita, neste exemplo, a preferência pela integração por merge. Se aparecer um conflito, resolva-o antes do push. Para iniciantes, inspecionar com \texttt{fetch} antes de integrar costuma facilitar o entendimento.
+
+\section*{Parte 13 --- Pull request: revisão antes de integrar}
+O \textbf{pull request} (PR) é um recurso de plataformas como GitHub, não um subcomando fundamental do Git. Ele permite propor a integração de um branch, examinar o diff, comentar, solicitar revisões e executar testes automáticos. A revisão não garante, por si só, a qualidade: depende das regras e das pessoas do projeto.
+\figura{07_fluxo_pr}{.92}{Fluxo comum de uma contribuição revisada.}
+Um fluxo de colaboração comum é: criar branch, fazer commits, enviar o branch para o remoto, abrir o PR na plataforma, revisar, corrigir e integrar. Algumas equipes exigem aprovações e verificações automáticas; outras adotam procedimentos diferentes.
+
+\section*{Parte 14 --- Desfazendo mudanças com segurança}
+Existem formas diferentes de desfazer, porque existem diferentes estados da mudança: editada e ainda não preparada, preparada, confirmada localmente ou já compartilhada.
+\figura{06_desfazer}{.96}{Os principais comandos de desfazer têm efeitos distintos.}
+\subsection*{restore e restore --staged}
+\begin{lstlisting}
+git restore notas.txt
+git restore --staged notas.txt
+\end{lstlisting}
+O primeiro comando substitui as alterações \emph{não preparadas} de \texttt{notas.txt} pelo conteúdo do índice e pode causar perda das edições locais. O segundo retira as alterações do índice, preservando o conteúdo atual do diretório de trabalho.
+\subsection*{amend e revert}
+\begin{lstlisting}
+git commit --amend -m "Mensagem corrigida"
+git revert HEAD
+\end{lstlisting}
+\texttt{commit --amend} cria um commit substituto para o último commit, mudando o identificador; use com cautela quando o histórico já foi publicado. \texttt{git revert} produz um novo commit para reverter o efeito de outro, preservando o histórico anterior. Essa é normalmente a alternativa mais adequada para alterações já compartilhadas.
+\subsection*{reset --hard e reflog}
+\begin{lstlisting}
+git reflog
+git reset --hard HEAD~2
+\end{lstlisting}
+\texttt{reset --hard} move o branch/HEAD para outro commit e ajusta o índice e o diretório de trabalho. \textbf{É destrutivo para alterações locais não confirmadas} e pode tornar commits inacessíveis pelas referências habituais. Use o comando demonstrativo \texttt{HEAD~2} somente em um repositório de laboratório.
+
+\texttt{git reflog} registra movimentos locais de referências e pode ajudar a encontrar commits que deixaram de aparecer no log comum. Não é um backup garantido: entradas expiram e objetos inalcançáveis podem ser removidos pela coleta de lixo do Git.
+
+\section*{Parte 15 --- O arquivo .gitignore e o stash}
+\subsection*{Ignorar arquivos não rastreados}
+Crie um arquivo \texttt{.gitignore} na raiz para estabelecer padrões de exclusão, por exemplo:
+\begin{lstlisting}
+.env
+bin/
+obj/
+*.log
+\end{lstlisting}
+O Git deixa de propor para inclusão automática os arquivos não rastreados que correspondam aos padrões. Isso não elimina um arquivo já versionado do histórico. Se credenciais vazaram em um commit, não basta adicionar \texttt{.env} ao \texttt{.gitignore}: é preciso revogar ou trocar os segredos comprometidos.
+\subsection*{Guardar temporariamente uma mudança incompleta}
+\begin{lstlisting}
+git stash push -m "Trabalho interrompido"
+git stash list
+git stash pop
+\end{lstlisting}
+O \texttt{stash} normalmente guarda alterações de arquivos rastreados e do índice. Arquivos novos não rastreados exigem \texttt{-u} se também precisarem ser incluídos. \texttt{stash pop} tenta reaplicar e remover a entrada guardada; conflitos são possíveis e, em caso de falha, a entrada pode permanecer para recuperação.
+
+\section*{Parte 16 --- Rebase: reaplicar commits sobre outra base}
+Enquanto o merge combina os históricos, frequentemente por meio de um commit de integração, o \textbf{rebase} reaplica commits sobre outro ponto de partida, produzindo novos commits com novos identificadores. Isso pode gerar um histórico mais linear, ao custo de reescrever a identidade dos commits reaplicados.
+\begin{lstlisting}
+git switch ideia
+git rebase main
+\end{lstlisting}
+Há projetos que usam rebase em branches pessoais e merge nas integrações; outros preferem uma estratégia única. A orientação prudente para iniciantes é \textbf{não reescrever commits compartilhados sem coordenação}. Um rebase pode gerar conflitos e requer procedimento específico para continuar ou abortar.
+\begin{lstlisting}
+git rebase --continue
+git rebase --abort
+\end{lstlisting}
+
+\section*{Parte 17 --- Laboratório guiado: do zero a uma integração}
+Este roteiro reúne os conceitos em uma sequência verificável.
+\begin{enumerate}
+\item Crie a pasta \texttt{laboratorio-git}, entre nela no terminal e execute \texttt{git init -b main}.
+\item Crie \texttt{notas.txt} com uma compra e \texttt{tarefas.txt} com um estudo. Consulte \texttt{git status --short}.
+\item Prepare apenas \texttt{notas.txt}. Observe o índice; depois prepare \texttt{tarefas.txt} e faça o primeiro commit.
+\item Altere \texttt{notas.txt}. Compare \texttt{git diff} e \texttt{git diff --staged} antes e depois de executar \texttt{git add}.
+\item Crie o branch \texttt{ideia}, acrescente ``comprar café'' e faça commit.
+\item Volte ao \texttt{main}; confira que a alteração está ausente e integre \texttt{ideia}. Observe se houve fast-forward.
+\item Em nova rodada, crie branches divergentes com edições diferentes e observe o gráfico do histórico.
+\item Em repositório exclusivamente de teste, altere a mesma linha em dois branches, provoque um conflito e resolva-o conscientemente.
+\item Se houver acesso ao GitHub, crie um repositório remoto vazio e pratique \texttt{remote add}, \texttt{push} e \texttt{clone}.
+\end{enumerate}
+\begin{tcolorbox}[title={RECOMENDAÇÃO PARA A AULA}]
+Antes de qualquer comando que altere o histórico, registre o resultado de \texttt{git status} e formule uma hipótese sobre o efeito esperado. Depois do comando, compare previsão e resultado.
+\end{tcolorbox}
+
+\section*{Parte 18 --- Ter acesso: HTTPS e SSH}
+\subsection*{O problema principal}
+Muitos erros no GitHub não acontecem por causa do Git. Eles acontecem porque o GitHub não conseguiu reconhecer quem está tentando acessar o repositório.
+
+\begin{tcolorbox}[title={PERGUNTA PRINCIPAL}]
+O GitHub sabe que eu sou eu?
+\end{tcolorbox}
+
+Antes de usar \texttt{git push}, é preciso saber como o computador prova a identidade do usuário para o GitHub. Há dois caminhos de login: pelo \textbf{navegador} (entrar no site, criar repositórios, configurar GitHub Pages, administrar a conta) e pelo \textbf{terminal} (enviar e baixar arquivos com comandos Git). No terminal existem dois protocolos principais: HTTPS e SSH.
+
+\subsection*{HTTPS}
+No GitHub, uma URL HTTPS tem este formato:
+\begin{lstlisting}
+https://github.com/usuario/repositorio.git
+\end{lstlisting}
+Esse método é recomendado para aula, principalmente em computadores de laboratório, porque pode ser configurado com a GitHub CLI. A autenticação por HTTPS pode acontecer por GitHub CLI, Git Credential Manager ou token de acesso pessoal.
+
+\begin{tcolorbox}[alertbox,title={ATENÇÃO}]
+A senha comum da conta GitHub não deve ser usada como senha no terminal para operações Git. Use GitHub CLI, token ou gerenciador de credenciais.
+\end{tcolorbox}
+
+Para verificar se o terminal já está autenticado e, se necessário, fazer login:
+\begin{lstlisting}
+gh auth status
+gh auth login
+git push
+\end{lstlisting}
+
+\subsection*{SSH}
+No GitHub, uma URL SSH tem este formato:
+\begin{lstlisting}
+git@github.com:usuario/repositorio.git
+\end{lstlisting}
+Esse método é recomendado para máquina própria. A autenticação acontece por meio de duas chaves: uma \textbf{privada}, que fica no computador, e uma \textbf{pública}, cadastrada no GitHub. O GitHub confirma que aquela máquina possui a chave privada correspondente à chave pública cadastrada na conta. Para testar a conexão:
+\begin{lstlisting}
+ssh -T git@github.com
+\end{lstlisting}
+Se funcionar, o GitHub responderá reconhecendo o usuário.
+
+\subsection*{HTTPS ou SSH?}
+\begin{center}\small
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|p{4.6cm}|p{8.6cm}|}\hline
+\rowcolor{azulclaro}\textbf{Situação} & \textbf{Recomendação} \\ \hline
+Aula em laboratório & HTTPS com GitHub CLI. \\ \hline
+Notebook pessoal & SSH. \\ \hline
+Primeira aula & Navegador. \\ \hline
+Problema de autenticação & Verificar conta, remoto e credenciais. \\ \hline
+Entrega emergencial & Upload pelo navegador. \\ \hline
+\end{tabular}
+\end{center}
+
+\section*{Parte 19 --- Criar, usar e publicar um projeto no GitHub}
+\passo{1}{Criar o repositório no GitHub}
+No site do GitHub: clique em \textbf{New repository}, escolha um nome, crie o repositório e copie a URL gerada.
+\passo{2}{Executar os comandos no terminal}
+Dentro da pasta do projeto:
+\begin{lstlisting}
+git init
+git add .
+git commit -m "primeira versao"
+git branch -M main
+git remote add origin URL_DO_REPOSITORIO
+git push -u origin main
+\end{lstlisting}
+\passo{3}{Usar um projeto que já existe no GitHub}
+Para baixar e, depois de editar, enviar novamente:
+\begin{lstlisting}
+git clone URL_DO_REPOSITORIO
+cd NOME_DA_PASTA
+git add .
+git commit -m "alteracao realizada"
+git push
+\end{lstlisting}
+\passo{4}{Publicar no GitHub Pages}
+Entre no repositório pelo navegador, clique em \textbf{Settings}, vá até \textbf{Pages}, escolha a branch \textbf{main} e a pasta \textbf{/root}, e clique em \textbf{Save}. Após alguns instantes, o GitHub exibirá o link do site publicado. Esse recurso é usado para publicar páginas HTML/CSS/JS, portfólios, landing pages e documentação de projetos.
+
+\section*{Parte 20 --- Resolver problemas}
+\subsection*{Antes de corrigir, descubra onde você está}
+\begin{lstlisting}
+pwd
+ls
+git status
+git remote -v
+git branch --show-current
+git config user.name
+git config user.email
+gh auth status
+\end{lstlisting}
+Esses comandos ajudam a descobrir se você está na pasta certa, se ela é um repositório Git, se existe remoto configurado, qual branch está em uso, qual nome/e-mail estão configurados no Git e se a GitHub CLI está autenticada.
+
+\subsection*{Erro 403}
+Possíveis causas: conta errada, permissão errada, credencial antiga salva, repositório de outra pessoa, URL remota incorreta. Verifique:
+\begin{lstlisting}
+git remote -v
+gh auth status
+\end{lstlisting}
+
+\subsection*{Repository not found}
+Possíveis causas: URL digitada errada, repositório privado, login em outra conta, repositório apagado, ou falta de permissão.
+
+\subsection*{Permission denied (publickey)}
+Esse erro normalmente aparece ao tentar usar SSH sem ter a chave configurada corretamente. Verifique:
+\begin{lstlisting}
+git remote -v
+ssh -T git@github.com
+\end{lstlisting}
+Se a URL começa com \texttt{git@github.com}, o projeto está usando SSH.
+
+\subsection*{Authentication failed}
+Indica falha de autenticação: tentativa de usar a senha comum, token errado ou vencido, GitHub CLI não autenticada, ou credencial antiga salva. Tente:
+\begin{lstlisting}
+gh auth status
+gh auth login
+\end{lstlisting}
+
+\begin{tcolorbox}[title={CHECKLIST FINAL ANTES DO PUSH}]
+\begin{enumerate}
+\item Estou na pasta correta?
+\item Esta pasta é um repositório Git?
+\item Fiz \texttt{git add .}?
+\item Fiz \texttt{git commit}?
+\item O remoto está correto?
+\item Estou usando HTTPS ou SSH?
+\item Minha autenticação está funcionando?
+\item Tenho permissão no repositório?
+\end{enumerate}
+\end{tcolorbox}
+
+\section*{Parte 21 --- Quadro de referência dos comandos}
+\begin{center}\small
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{|p{5.3cm}|p{8.2cm}|}\hline
+\rowcolor{azulclaro}\textbf{Comando} & \textbf{Função principal} \\ \hline
+\endhead
+\texttt{git init -b main} & Inicia repositório com branch principal denominado main. \\ \hline
+\texttt{git status} & Inspeciona alterações e estado atual. \\ \hline
+\texttt{git add arquivo} & Prepara o conteúdo de um arquivo. \\ \hline
+\texttt{git commit -m "msg"} & Registra novo commit com mensagem. \\ \hline
+\texttt{git diff} & Compara diretório de trabalho com índice. \\ \hline
+\texttt{git diff --staged} & Compara índice com o commit atual. \\ \hline
+\texttt{git log --oneline} & Mostra histórico de forma compacta. \\ \hline
+\texttt{git switch -c nome} & Cria branch e troca para ele. \\ \hline
+\texttt{git switch main} & Troca para o branch main. \\ \hline
+\texttt{git merge nome} & Integra o branch indicado ao atual. \\ \hline
+\texttt{git remote -v} & Lista remotos e URLs. \\ \hline
+\texttt{git push} & Envia commits ao remoto configurado. \\ \hline
+\texttt{git clone URL} & Clona repositório remoto. \\ \hline
+\texttt{git fetch} & Atualiza informações do remoto. \\ \hline
+\texttt{git pull} & Busca e integra conforme a configuração. \\ \hline
+\texttt{git restore arquivo} & Descarta alterações locais não preparadas. \\ \hline
+\texttt{git restore --staged arquivo} & Remove conteúdo da área de preparação. \\ \hline
+\texttt{git commit --amend} & Substitui o último commit por outro. \\ \hline
+\texttt{git revert HASH} & Registra reversão de um commit. \\ \hline
+\texttt{git reflog} & Consulta movimentos recentes de referências locais. \\ \hline
+\texttt{git stash} & Guarda temporariamente mudanças elegíveis. \\ \hline
+\texttt{git rebase main} & Reaplica commits sobre main. \\ \hline
+\texttt{gh auth status / login} & Verifica ou inicia a autenticação da GitHub CLI. \\ \hline
+\texttt{ssh -T git@github.com} & Testa a autenticação SSH com o GitHub. \\ \hline
+\end{longtable}
+\end{center}
+
+\section*{Parte 22 --- Perguntas de revisão}
+\begin{enumerate}
+\item Qual problema o Git resolve que não é resolvido adequadamente com arquivos ``final-v7''?
+\item O que distingue Git de GitHub? É possível usar Git sem internet?
+\item Por que um arquivo pode estar alterado, mas não constar do próximo commit?
+\item Qual a diferença entre \texttt{git diff} e \texttt{git diff --staged}?
+\item Que informação existe em blob, tree e commit?
+\item O branch main guarda uma cópia dos arquivos ou uma referência para um commit?
+\item O que muda no histórico entre fast-forward e merge de branches divergentes?
+\item Quando o Git pode exigir que uma pessoa resolva um conflito?
+\item Por que \texttt{git fetch} é útil antes de integrar mudanças remotas?
+\item Qual a diferença entre desfazer com \texttt{revert} e reescrever com \texttt{reset}?
+\item Por que o \texttt{.gitignore} não remove uma senha que já foi publicada?
+\item Em quais circunstâncias o rebase exige cautela adicional?
+\item Por que \texttt{git push} pode pedir autenticação mesmo depois de eu já ter entrado no site do GitHub?
+\item Em que situação HTTPS com GitHub CLI é mais indicado do que SSH, e vice-versa?
+\end{enumerate}
+
+\begin{tcolorbox}[title={QUADRO DE VERIFICAÇÃO}]
+$\square$ Sei explicar, com minhas palavras, o que são commit, branch, merge, push e pull.\par
+$\square$ Consigo criar um repositório, preparar arquivos e registrar commits.\par
+$\square$ Sei diferenciar \texttt{git diff} de \texttt{git diff --staged}.\par
+$\square$ Entendo a diferença entre fast-forward e merge com histórico divergente.\par
+$\square$ Sei resolver um conflito simples sem apagar o trabalho de ninguém.\par
+$\square$ Sei escolher entre HTTPS e SSH e testar a autenticação no terminal.\par
+$\square$ Consigo publicar um site estático no GitHub Pages.\par
+$\square$ Sei por onde começar ao diagnosticar um erro de push antes de pedir ajuda.\par
+\end{tcolorbox}
+
+\section*{Resumo final}
+\begin{tcolorbox}[title={RESUMO}]
+Para usar Git e GitHub bem, o estudante precisa entender três coisas:
+\begin{enumerate}
+\item \textbf{O que é}: Git, GitHub, commit, branch, merge, repositório e GitHub Pages.
+\item \textbf{Como funciona por dentro}: as três áreas de trabalho, objetos, hashes e referências.
+\item \textbf{Como usar}: criar, clonar, alterar, enviar, integrar, desfazer, publicar e diagnosticar erros.
+\end{enumerate}
+\end{tcolorbox}
+
+\section*{Nota sobre a origem e as adaptações}
+Este material reúne três origens: uma introdução por analogia sobre commit, branch, merge, push e pull; um desenvolvimento conceitual mais profundo sobre o funcionamento interno do Git (áreas de trabalho, objetos, hashes, branches, merge, conflitos, remotos, pull request, desfazer, \texttt{.gitignore}, stash e rebase), com diagramas originais fornecidos em SVG editável e PDF vetorial; e um guia prático de acesso, publicação e diagnóstico de erros (HTTPS, SSH, GitHub CLI, GitHub Pages e checklist de push). Os três conteúdos foram unificados nesta apostila e adaptados ao mesmo layout, tipografia e paleta de cores usados nas demais apostilas da disciplina. Endereços de repositório e usuários usados como exemplo são fictícios.
+
+\end{document}
